@@ -78,7 +78,7 @@ namespace DiscordMafia.Modules
         }
 
         [Command("join"), Summary("Присоединяет игрока к игре."), RequireGameState(GameState.PlayerCollecting),
-         Alias("я", "z")]
+         Alias("я", "ня", "нян", "ню", "няя", "няян", "z", "zz", "zzz", "nya", "nyan", "nyaan", "позаботьтесь", "ужасно", "хочу", "буду", "и", "ия", "nyaa", "eh")]
         public async Task Register([Remainder] string ignored = null)
         {
             var user = new UserWrapper(Context.User);
@@ -173,7 +173,7 @@ namespace DiscordMafia.Modules
         }
 
         [Command("imprison"), Summary("Осудить указанного игрока."), RequirePlayer, RequireGameState(GameState.Day, GameState.Evening),
-         Alias("посадить", "повесить", "gjcflbnm", "gjdtcbnm")]
+         Alias("укаваить", "закаваить", "расстрелять", "пристрелить", "повеселить", "посолить", "обнять", "посадить", "повесить", "понять", "простить", "принять", "gjcflbnm", "gjdtcbnm")]
         public async Task Vote([Summary("номер игрока")] InGamePlayerInfo player, [Remainder] string ignored = null)
         {
             if (_game.CurrentPlayers.TryGetValue(Context.User.Id, out InGamePlayerInfo currentPlayer))
