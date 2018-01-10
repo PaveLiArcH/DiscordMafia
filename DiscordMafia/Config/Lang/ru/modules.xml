@@ -23,6 +23,24 @@
             <Aliases>
               <string>я</string>
               <string>z</string>
+              <string>ня</string>
+              <string>нян</string>
+              <string>ню</string>
+              <string>няя</string>
+              <string>няян</string>
+              <string>zz</string>
+              <string>zzz</string>
+              <string>nya</string>
+              <string>nyan</string>
+              <string>nyaan</string>
+              <string>позаботьтесь</string>
+              <string>ужасно</string>
+              <string>хочу</string>
+              <string>буду</string>
+              <string>и</string>
+              <string>ия</string>
+              <string>nyaa</string>
+              <string>eh</string>
             </Aliases>
             <Summary>Присоединяет игрока к игре.</Summary>
           </Info>
@@ -55,6 +73,16 @@
               <string>повесить</string>
               <string>gjcflbnm</string>
               <string>gjdtcbnm</string>
+              <string>укаваить</string>
+              <string>закаваить</string>
+              <string>расстрелять</string>
+              <string>пристрелить</string>
+              <string>повеселить</string>
+              <string>посолить</string>
+              <string>обнять</string>
+              <string>понять</string>
+              <string>простить</string>
+              <string>принять</string>
             </Aliases>
             <Summary>Осудить указанного игрока.</Summary>
           </Info>
