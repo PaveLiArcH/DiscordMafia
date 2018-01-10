@@ -2,29 +2,6 @@
 {
     public class Hacker : UniqueRole, ITargetedRole
     {
-        public override string Name
-        {
-            get
-            {
-                return "Хакер";
-            }
-        }
-
-        public override string[] NameCases
-        {
-            get
-            {
-                return new string[] {
-                    "хакер",
-                    "хакера",
-                    "хакеру",
-                    "хакера",
-                    "хакером",
-                    "хакере",
-                };
-            }
-        }
-
         public override Team Team
         {
             get
@@ -50,7 +27,7 @@
         public override void NightInfo(Game game, InGamePlayerInfo currentPlayer)
         {
                 base.NightInfo(game, currentPlayer);
-                game.GetAlivePlayersMesssage(true, true, currentPlayer, "/hack");
+                game.SendAlivePlayersMesssage(currentPlayer);
         }
 
         public override bool IsReady(GameState currentState)

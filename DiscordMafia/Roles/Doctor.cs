@@ -4,29 +4,6 @@ namespace DiscordMafia.Roles
 {
     public class Doctor : UniqueRole, ITargetedRole
     {
-        public override string Name
-        {
-            get
-            {
-                return "Доктор";
-            }
-        }
-
-        public override string[] NameCases
-        {
-            get
-            {
-                return new string[] {
-                    "доктор",
-                    "доктора",
-                    "доктору",
-                    "доктора",
-                    "доктором",
-                    "докторе",
-                };
-            }
-        }
-
         public override Team Team
         {
             get
@@ -83,7 +60,7 @@ namespace DiscordMafia.Roles
         public override void NightInfo(Game game, InGamePlayerInfo currentPlayer)
         {
             base.NightInfo(game, currentPlayer);
-            game.GetAlivePlayersMesssage(true, true, currentPlayer, "/лечить");
+            game.SendAlivePlayersMesssage(currentPlayer);
         }
 
         public override bool IsReady(GameState currentState)

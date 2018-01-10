@@ -7,6 +7,7 @@ using DiscordMafia.Config;
 using DiscordMafia.DB;
 using DiscordMafia.Roles;
 using Microsoft.Data.Sqlite;
+using System.Collections.Generic;
 
 namespace DiscordMafia.Modules
 {
@@ -34,37 +35,37 @@ namespace DiscordMafia.Modules
         }
 
         [Command, Priority(-100), Summary("Топ по умолчанию (может меняться)")]
-        public async Task Default([Summary("Страница топа")] int page = 1)
+        public async Task Default(int page = 1)
         {
             await DrawTop(PointsField, page);
         }
 
         [Command("points"), Summary("Топ по очкам"), Alias("очков"), Priority(100)]
-        public async Task PointsTop([Summary("Страница топа")] int page = 1)
+        public async Task PointsTop(int page = 1)
         {
             await DrawTop(PointsField, page);
         }
 
         [Command("rate"), Summary("Топ по рейтингу"), Alias("rating", "рейтинга", "рейтинг", "рейтинги"), Priority(100)]
-        public async Task RateTop([Summary("Страница топа")] int page = 1)
+        public async Task RateTop(int page = 1)
         {
             await DrawTop(RateField, page);
         }
 
         [Command("games"), Summary("Топ по играм"), Alias("игра", "игр", "игры"), Priority(100)]
-        public async Task GamesTop([Summary("Страница топа")] int page = 1)
+        public async Task GamesTop(int page = 1)
         {
             await DrawTop(GamesField, page);
         }
 
         [Command("survivals"), Summary("Топ по выживаемости"), Alias("выживших", "выживания", "выживающих", "живучих"), Priority(100)]
-        public async Task SurvivalsTop([Summary("Страница топа")] int page = 1)
+        public async Task SurvivalsTop(int page = 1)
         {
             await DrawTop(SurvivabilityField, page);
         }
 
         [Command("wins"), Summary("Топ по победам"), Alias("побед", "победителей"), Priority(100)]
-        public async Task WinsTop([Summary("Страница топа")] int page = 1)
+        public async Task WinsTop(int page = 1)
         {
             await DrawTop(WinsField, page);
         }
@@ -83,13 +84,15 @@ namespace DiscordMafia.Modules
             string name = "";
             switch (field)
             {
-                default: field = PointsField; name = "очкам"; break;
-                case SurvivabilityField: name = "выживаемости"; break;
-                case WinsField: name = "победам"; break;
-                case PointsField: name = "очкам"; break;
-                case RateField: name = "рейтингу"; break;
-                case GamesField: name = "играм"; break;
+                default: field = PointsField; name = "Points"; break;
+                case SurvivabilityField: name = "Survivability"; break;
+                case WinsField: name = "Wins"; break;
+                case PointsField: name = "Points"; break;
+                case RateField: name = "Rate"; break;
+                case GamesField: name = "Games"; break;
             }
+            string rateColumnName = _game.MessageBuilder.GetTextSimple($"RatingFieldColumn_{name}");
+            name = _game.MessageBuilder.GetTextSimple($"RatingFieldName_{name}");
 
             var total = this.GetPlayerCount();
 
@@ -108,8 +111,12 @@ namespace DiscordMafia.Modules
             var command = _connection.CreateCommand();
             command.CommandText = $"SELECT id, username, {field} FROM user ORDER BY _data DESC, username ASC LIMIT :limit OFFSET :offset";
             command.Parameters.AddRange(parameters);
-
-            string title = $"Лучшие игроки по {name} (страница {page}/{maxPage})";
+            
+            string title = _game.MessageBuilder.GetTextSimple("RatingHeader", new Dictionary<string, object> {
+                ["name"] = name,
+                ["page"] = page,
+                ["maxPage"] = maxPage,
+            });
             builder.WithTitle(title);
 
             StringBuilder rating = new StringBuilder();
@@ -134,26 +141,20 @@ namespace DiscordMafia.Modules
                     case GamesField: point = reader.GetInt32(2).ToString(); break;
                     case SurvivabilityField:
                     case WinsField:
-                        point = reader.IsDBNull(2) ? "Н/Д" : reader.GetDouble(2).ToString("0.00");
+                        point = reader.IsDBNull(2) ? _game.MessageBuilder.GetTextSimple("N/A") : reader.GetDouble(2).ToString("0.00");
                         break;
                 }
                 rating.AppendFormat("`{0}. {1} - {2}`", index.ToString().PadLeft(width, '0'), LimitLength(MessageBuilder.Encode(Username), 27), point);
                 rating.AppendLine();
             }
-
-            string rateName = "";
-            switch (field)
-            {
-                case SurvivabilityField: rateName = "% выживания"; break;
-                case WinsField: rateName = "% побед"; break;
-                case PointsField: rateName = "Очки"; break;
-                case RateField: rateName = "Рейтинг"; break;
-                case GamesField: rateName = "Игр"; break;
-            }
-
+            
             builder.AddField(x =>
                 {
-                    x.Name = "".PadLeft(width, '#') + ". Игрок - " + rateName;
+                    x.Name = _game.MessageBuilder.GetTextSimple("RatingHeaderFormat", new Dictionary<string, object>
+                    {
+                        ["idx"] = "".PadLeft(width, '#'),
+                        ["ratingColumn"] = rateColumnName,
+                    });
                     x.Value = rating.ToString();
                     x.IsInline = true;
                 });

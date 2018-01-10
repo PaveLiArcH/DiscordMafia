@@ -5,6 +5,7 @@ using DiscordMafia.Roles;
 using System.Xml.Serialization;
 using System.Xml;
 using System.Xml.Schema;
+using DiscordMafia.Config.Lang;
 
 namespace DiscordMafia.Config
 {
@@ -30,8 +31,7 @@ namespace DiscordMafia.Config
         public int NightTime { get; protected set; }
         public byte MaxUsersToNotify { get; protected set; }
         public int MinNotificationInterval { get; protected set; }
-
-        public Messages Messages { get; private set; }
+        
         public Points Points { get; private set; }
         public Roles Roles { get; private set; }
 
@@ -64,13 +64,11 @@ namespace DiscordMafia.Config
             IsYakuzaEnabled = false;
 
             ReadConfig();
-
-            Messages = Messages.GetInstance(GetFilePath("messages.xml"));
-            Console.WriteLine("Сообщения загружены");
+            
             Points = Points.GetInstance(GetFilePath("points.xml"));
-            Console.WriteLine("Конфигурация очков загружена");
+            Console.WriteLine("Points configuration successfully loaded");
             Roles = Roles.GetInstance(GetFilePath("roles.xml"));
-            Console.WriteLine("Конфигурация ролей загружена");
+            Console.WriteLine("Role configuration successfully loaded");
         }
 
         protected void ReadConfig()
