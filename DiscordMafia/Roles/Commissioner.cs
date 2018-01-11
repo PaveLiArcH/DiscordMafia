@@ -2,29 +2,6 @@
 {
     public class Commissioner : UniqueRole, ITargetedRole
     {
-        public override string Name
-        {
-            get
-            {
-                return "Комиссар";
-            }
-        }
-
-        public override string[] NameCases
-        {
-            get
-            {
-                return new string[] {
-                    "комиссар",
-                    "комиссара",
-                    "комиссару",
-                    "комиссара",
-                    "комиссаром",
-                    "комиссаре",
-                };
-            }
-        }
-
         public override Team Team
         {
             get
@@ -47,7 +24,7 @@
         public override void NightInfo(Game game, InGamePlayerInfo currentPlayer)
         {
             base.NightInfo(game, currentPlayer);
-            game.GetAlivePlayersMesssage(true, true, currentPlayer, "/check");
+            game.SendAlivePlayersMesssage(currentPlayer);
         }
 
         public override bool IsReady(GameState currentState)
